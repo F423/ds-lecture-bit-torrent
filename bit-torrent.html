@@ -1,0 +1,170 @@
+<p>Follow <a href="https://pandoc.org/MANUAL.html">Pandoc’s manual</a></p>
+<h1 id="bittorrent">BitTorrent</h1>
+<ul>
+<li>BitTorrent is a protocol for peer-to-peer content sharing over the Internet.</li>
+<li>In November 2004 BitTorrent share of the whole Internet Traffic was estimated at 35% (Wikipedia).</li>
+<li>The protocol was designed by Bram Cohen in 2001.</li>
+<li>Bram Cohen released an implementation in the same year.</li>
+<li>The final Version was released in 2008.</li>
+</ul>
+<p>.. Figure:: figures/BitTorrentModel.png :align: center :width: 700px :height: 600px :alt: Figure 1</p>
+<h2 id="terminology">Terminology</h2>
+<ul>
+<li>Seeder A peer with complete file is called seeder. Initially there is only one seeder (the one who uploads the file). Peers who download the file completely and contunue to share, become seeders.</li>
+<li><p>Peer A host that is in process of downloading the file while uploading at the same time. This is sometimes called a leecher as well; however, the term leecher is sometimes used for peers that just download and decide to not upload.</p></li>
+<li><p>Bencoding Messages exchanged between peers and trackers are bencoded as explained below:</p>
+<ul>
+<li>Strings are prefixed with an integer representing their length followed by a colon and the string itself. For example 4:info corresponds to ‘info’</li>
+<li>Integers are prefixed by an i followed by the integer and ending with an e. Example, i3e corresponds to 3.</li>
+<li>Lists are prefixed with l followed by elements (also bencoded) ending with e. Example l4:info3:abce corresponds to [‘info’, ‘abc’]</li>
+<li>Dictionaries are prefixed by d followed by an alternating list of keys and values, and they end in e. For example, d1:a4:spam1:b4:infoe corresponds to {‘a’: ‘spam’, ‘b’: ‘info’}</li>
+</ul></li>
+<li><p>Metainfo (.torrent) File</p>
+<ul>
+<li>A light-weight file that contains meta-data about the file(s), trackers, etc. as explained below.</li>
+<li>URL of the tracker(s).</li>
+<li><p>info field which is a dictionary with the following elements</p>
+<ul>
+<li>name: maps to the name of the file/directory being shared</li>
+<li>piece length: The size of the file pieces.</li>
+<li>length: Length of the file in bytes.</li>
+</ul></li>
+</ul></li>
+<li><p>Tracker</p>
+<ul>
+<li>A host that coordinates file distribution.</li>
+<li>Maintains IP address, port number and an ID for every peer.</li>
+<li>Transfer state for peers: downloading, completed.</li>
+<li>It returs a random list of peers to the clients when requested.</li>
+<li>Peers send Tracker GET requests to trackers and they get Responses back from the tracker.</li>
+<li><p>Tracker GET requests have the following fields</p>
+<ul>
+<li>info_hash: a sha1 hash of the metainfo file</li>
+<li>peer_id: a 20 byte identifier that the peer generates when it first starts</li>
+<li>ip: The IP address of the peer</li>
+<li>port: The port number that the peer uses</li>
+<li>uploaded: The total amount (in bytes) uploaded so far</li>
+<li>downloaded: The total amount (in bytes) this peer has downloaded so far</li>
+<li>left: The amount (in bytes) this peer has yet to download to complete download</li>
+<li>event: An optional key that maps to one of ‘completed’, ‘started’, stopped’. The peers can inform the trackers of their status using event messages.</li>
+</ul></li>
+<li><p>Tracker responses are dictionaries with the following elements:</p>
+<ul>
+<li>interval: Number of seconds downloader should wait before sending another request</li>
+<li>peers: A list of dictionaries corresponding to peers</li>
+<li>failure reason: A string explaining the reason why the request failed, in case there is a failure</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="how-it-works">How It Works</h2>
+<ul>
+<li>BitTorrent client is the tool used to achieve the majority of the activities in sharing.</li>
+<li><p>The file(s) being distribted is divided into pieces.</p>
+<ul>
+<li>When a peer receives a piece, it can then redistribute it to other peers.</li>
+<li>Pieces are protected by a cryptographic hash so as to avoid accidental or malicious modification.</li>
+<li>Pieces are distributed non-sequentially and the client rearranges them when it receives all the pieces.</li>
+<li>Piece size can be set arbitrarily by the client. For example, with piece size of 1 MB a 10 MB file will divided into 10 equal pieces and will be shared in chunks of 1 MB.</li>
+</ul></li>
+<li><p>Transfer is done via TCP as follows:</p>
+<ul>
+<li>The protocol makes sure that several requests are pending before a piece is being sent.</li>
+<li>At the receiving end once a piece arrives, another request is sent.</li>
+<li>At any point in time, a specific number of pieces (usually 5) is requested.</li>
+</ul></li>
+</ul>
+<p>========================== Piece Selection Policy ==========================</p>
+<p>If pieces are not selected in a well-thought way, all peers may endup having downloaded the same pieces but some (of the more difficult pieces) may be missing. If the seeder disappears preamturely, all peers may end up with incomplete files. To solve this issue, one or more of the following policies are used:</p>
+<ul>
+<li><p>Random First Piece Selection</p>
+<ul>
+<li>Initially the peer has no pieces.</li>
+<li>Select a first piece and downoad it as soon as possibly.</li>
+<li>Select a random piece of the file and download it.</li>
+</ul></li>
+<li><p>Rarest Piece First</p>
+<ul>
+<li>Determine the piecest that are not found or are rare among the peers and download those first.</li>
+<li>This ensures that the common pieces are left towards the end to be downloaded.</li>
+</ul></li>
+</ul>
+<p>================================= Create and Share Torrent Files =================================</p>
+<p>When a user wants to share a file, they would create a torrent file (Torrent files are identified by .torrent extension) using the client application. The torrent file wraps around information such as the specifi file(s) to be shared, location of the file(s) on the seed machine, etc. The torrent file is then shared with other peers. The original uploader is known as seed/seeder and others who start downloading from seeder are known as peers or leechers.</p>
+<p>============================================ Choking and Optimistic Unchoking Algorithm ============================================ Choking is a mechanism using which the BitTorrent protocol avoids free riders, those who want to download but not upload. Also, choking helps tackle network congestion???</p>
+<ol>
+<li>Upload one file piece to peer p</li>
+<li>Repeat 1 N times // N is typically between 2 and 5</li>
+<li>If peer p uploads data go to 1 else go to 4</li>
+<li>Stop uploading to p for S seconds</li>
+<li>After S seconds go to step 1</li>
+</ol>
+<p>The above procedure is applied for all peers. The last step is called optimistic unchoking. This way the algorithm makes sure that no peers are choked permanently. This is a simplistic procedure for choking/unchoking mechanism. The real algorithm may be more complex depending on implementation. In the the case where the uploader is a seeder rather than a simple peer, the overall upload rate for the downloading peer is checked and then it is decided whether to chokoe or unchoke. And finally the seeders and peers upoad to those peers with the highest upload rate. This way, the protocol makes sure that the the uploads complete fast and the number of replica is large.</p>
+<p>================= Peer Protocol ================= - Peer connections are symmetrical: same data can be sent in both directions - File pieces are referred to by indexes - When a peer finishes downloading a piece it announces to all other peers that it has that piece - Connections on both sides contain two bits of state: choked/unchoked and interested/not_interested - Choking the status indicating that no data can be sent until the unchoking happens - Data transfer happens when one side is interested and the other side is not choking - Connections start in unchoked and not-interested state - Downloaders should keep several piece requests queued for best TCP performance - The peer data stream is started by a handshake and followed by a continuous stream of data transfers - The first chunk of bytes is the header - Next comes the 20 byte hash of the info value from the metainfo file i.e. the info_hash - Then comes the 20 byte peer id - At this point handshake is finished and an alternating stream of length prefixes and messages continue flowing - Peer messages start with a byte that specifies their type as follows:</p>
+<ul>
+<li>0: choke</li>
+<li>1: unchoke</li>
+<li>2: interested</li>
+<li>3: not interested</li>
+<li>4: have</li>
+<li>5: bitfield</li>
+<li>6: request</li>
+<li>7: piece</li>
+<li>8: cancel</li>
+</ul>
+<p>choke, unchoke, interested and not interested have no payload. The ‘have’ message has a number as its payload which is the index of the piece the downloader has just completed. Cancel messages are sent when the download is completed.</p>
+<p>================================ Distributed Characteristics ================================</p>
+<ul>
+<li><p>Support for resource sharing</p>
+<ul>
+<li>Trackers are used to make sure that resources are shared among as many peers as possible</li>
+</ul></li>
+<li><p>Openness</p>
+<ul>
+<li>The specification is open for implementation.</li>
+<li>No restriction to any particular platform whatsover. There are implementations for various platforms.</li>
+</ul></li>
+<li><p>Concurrency</p>
+<ul>
+<li>Each peer is both a client and server</li>
+<li>Many processes interact to achieve the job</li>
+</ul></li>
+<li><p>Scalability</p>
+<ul>
+<li>Peers are added or removed seamlessly without affecting the reliability of the system.</li>
+<li>New trackers can be added and old one can disappear without much effect to the whole system.</li>
+</ul></li>
+<li><p>Fault Tolerance</p>
+<ul>
+<li>When peers appear or disappear at random, the system is not affected significantly as long as there is at least one seeder.</li>
+<li>One or more trackers should always exist to propogate peers information.</li>
+<li>If number of seeders goes to zero, peers keep sharing the portions of the files that they have. This might mean that the file(s) might be incomplete. As soon as a seeder re-appears all peers can catch up and get the whole file(s).</li>
+<li>There are implementations in which there is no need for trackers.</li>
+</ul></li>
+<li><p>Transparency</p>
+<ul>
+<li>All details are hidden from the end users.</li>
+<li>It looks much like a normal client-server download manager</li>
+</ul></li>
+</ul>
+<p>============= Advantages =============</p>
+<ul>
+<li>Economical: Almost no maintenance cost is involved</li>
+<li>It is very efficient since every participant is a content provider. No dependency on a single party.</li>
+<li>Highly extensible: peers join and leave with almost no effect on the content with the exception that there always should be at least one seeder.</li>
+<li>It is reliable: As long as there is one seeder (and more peers), it is guaranteed that the system works well.</li>
+<li>It gives flexibility: The work is evenly distributed among peers.</li>
+</ul>
+<p>============== Disadvantages ==============</p>
+<ul>
+<li>If there is no seeder, for some content the peers may end up exchanging only part of the whole content.</li>
+<li>Peers are loosely dependent on one another for bandwidth.</li>
+<li>Designed for public file sharing and hence not the best option for private sharing</li>
+<li>Copyright infringment concerns: it is hard to control whether the shared resources for copyright infringement.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>BitTorrent Official specification: http://www.bittorrent.org/beps/bep_0003.html</li>
+<li>Wikipedia entry: http://en.wikipedia.org/wiki/BitTorrent</li>
+<li>The Pirate Bay, a BitTorrent distribution server: http://thepiratebay.sx/</li>
+<li>An example of list of trackers: http://tech.thaweesha.com/2013/02/torrent-tracker-list-2013.html</li>
+</ul>
