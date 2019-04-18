@@ -3,13 +3,20 @@
 
 Introduction
 =============
-
 BitTorrent is an Internet protocol primarily used for transporting large media contents.
 Bram Cohen designed, implemented, and released BitTorrent in 2001. The lengthy download times of protocols such as the File Transfer Protocol (FTP) influenced its creation. (Encyclopædia Britannica)
-It relies on Peer-to-Peer (P2P) distributed computing to facilitate the network's bandwith capacity.
+It mainly relies on Peer-to-Peer (P2P) distributed computing to facilitate the network's bandwith capacity.
 
 
 ![BitTorrent Model](/figures/BitTorrentModel.png)
+
+
+## Peer-to-Peer (P2P) Networking
+Unlike centralized client-server networks, decentralized P2P networks spread processing and networking costs among thier connected users.
+
+
+### Examples
+- Napster
 
 
 Terminology
@@ -214,7 +221,7 @@ Disadvantages
 References
 -------------------
 - [BitTorrent Official specification](http://www.bittorrent.org/beps/bep_0003.html)
-- [Wikipedia entry](http://en.wikipedia.org/wiki/BitTorrent)
+- Wikipedia entries on [BitTorrent](http://en.wikipedia.org/wiki/BitTorrent) and [P2P](https://en.wikipedia.org/wiki/Peer-to-peer)
 - [The Pirate Bay, a BitTorrent distribution server](http://thepiratebay.sx/)
 - [An example of list of trackers](http://tech.thaweesha.com/2013/02/torrent-tracker-list-2013.html)
 - Encyclopædia Britannica entries on ["BitTorrent."](academic-eb-com.flagship.luc.edu/levels/collegiate/article/BitTorrent/571419) and ["P2P."](academic-eb-com.flagship.luc.edu/levels/collegiate/article/P2P/471622) (database login required)
