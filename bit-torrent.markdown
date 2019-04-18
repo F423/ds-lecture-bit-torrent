@@ -1,23 +1,27 @@
-Follow [Pandoc's manual](https://pandoc.org/MANUAL.html)
-
 BitTorrent
 =============
 
-- BitTorrent is a protocol for peer-to-peer content sharing over the Internet.
+## Overview
+- BitTorrent is a protocol for Peer-to-Peer (P2P) content sharing over the Internet.
 - In November 2004 BitTorrent share of the whole Internet Traffic was estimated at 35% (Wikipedia).
 - The protocol was designed by Bram Cohen in 2001.
 - Bram Cohen released an implementation in the same year.
 - The final Version was released in 2008.
+-
 
-.. Figure:: figures/BitTorrentModel.png
-	:align:  center
-	:width:	 700px
-	:height: 600px
-	:alt:    Figure 1
+![BitTorrent Model](/figures/BitTorrentModel.png)
+
+
+## Examples
+
+
+
+## Advantages of P2P over FTP
+
 
 Terminology
 -------------
-- Seeder 
+- Seeder
 	A peer with complete file is called seeder.
 	Initially there is only one seeder (the one who uploads the file).
 	Peers who download the file completely and contunue to share, become seeders.
@@ -32,7 +36,7 @@ Terminology
   - Lists are prefixed with l followed by elements (also bencoded) ending with e. Example l4:info3:abce corresponds to ['info', 'abc']
   - Dictionaries are prefixed by d followed by an alternating list of keys and values, and they end in e. For example, d1:a4:spam1:b4:infoe corresponds to {'a': 'spam', 'b': 'info'}
 
-- Metainfo (.torrent) File 
+- Metainfo (.torrent) File
 
   - A light-weight file that contains meta-data about the file(s), trackers, etc. as explained below.
   - URL of the tracker(s).
@@ -59,12 +63,13 @@ Terminology
     - downloaded: The total amount (in bytes) this peer has downloaded so far
     - left: The amount (in bytes) this peer has yet to download to complete download
     - event: An optional key that maps to one of 'completed', 'started', stopped'. The peers can inform the trackers of their status using event messages.
-  
+
   - Tracker responses are dictionaries with the following elements:
 
     - interval: Number of seconds downloader should wait before sending another request
     - peers: A list of dictionaries corresponding to peers
     - failure reason: A string explaining the reason why the request failed, in case there is a failure
+
 
 How It Works
 ----------------
@@ -82,7 +87,7 @@ How It Works
   - At the receiving end once a piece arrives, another request is sent.
   - At any point in time, a specific number of pieces (usually 5) is requested.
 
-==========================
+
 Piece Selection Policy
 ==========================
 
@@ -100,7 +105,7 @@ To solve this issue, one or more of the following policies are used:
   - Determine the piecest that are not found or are rare among the peers and download those first.
   - This ensures that the common pieces are left towards the end to be downloaded.
 
-=================================
+
 Create and Share Torrent Files
 =================================
 
@@ -109,7 +114,7 @@ The torrent file wraps around information such as the specifi file(s) to be shar
 The torrent file is then shared with other peers.
 The original uploader is known as seed/seeder and others who start downloading from seeder are known as peers or leechers.
 
-============================================
+
 Choking and Optimistic Unchoking Algorithm
 ============================================
 Choking is a mechanism using which the BitTorrent protocol avoids free riders, those who want to download but not upload.
@@ -126,7 +131,7 @@ This is a simplistic procedure for choking/unchoking mechanism. The real algorit
 In the the case where the uploader is a seeder rather than a simple peer, the overall upload rate for the downloading peer is checked and then it is decided whether to chokoe or unchoke.
 And finally the seeders and peers upoad to those peers with the highest upload rate. This way, the protocol makes sure that the the uploads complete fast and the number of replica is large.
 
-=================
+
 Peer Protocol
 =================
 - Peer connections are symmetrical: same data can be sent in both directions
@@ -158,7 +163,7 @@ choke, unchoke, interested and not interested have no payload.
 The 'have' message has a number as its payload which is the index of the piece the downloader has just completed.
 Cancel messages are sent when the download is completed.
 
-================================
+
 Distributed Characteristics
 ================================
 
@@ -182,7 +187,7 @@ Distributed Characteristics
   - New trackers can be added and old one can disappear without much effect to the whole system.
 
 - Fault Tolerance
- 
+
   - When peers appear or disappear at random, the system is not affected significantly as long as there is at least one seeder.
   - One or more trackers should always exist to propogate peers information.
   - If number of seeders goes to zero, peers keep sharing the portions of the files that they have. This might mean that the file(s) might be incomplete. As soon as a seeder re-appears all peers can catch up and get the whole file(s).
@@ -193,7 +198,7 @@ Distributed Characteristics
   - All details are hidden from the end users.
   - It looks much like a normal client-server download manager
 
-=============
+
 Advantages
 =============
 
@@ -203,7 +208,7 @@ Advantages
 - It is reliable: As long as there is one seeder (and more peers), it is guaranteed that the system works well.
 - It gives flexibility: The work is evenly distributed among peers.
 
-==============
+
 Disadvantages
 ==============
 
@@ -212,9 +217,11 @@ Disadvantages
 - Designed for public file sharing and hence not the best option for private sharing
 - Copyright infringment concerns: it is hard to control whether the shared resources for copyright infringement.
 
+
 References
 -------------------
-- BitTorrent Official specification: http://www.bittorrent.org/beps/bep_0003.html
-- Wikipedia entry: http://en.wikipedia.org/wiki/BitTorrent
-- The Pirate Bay, a BitTorrent distribution server: http://thepiratebay.sx/
-- An example of list of trackers: http://tech.thaweesha.com/2013/02/torrent-tracker-list-2013.html
+- [BitTorrent Official specification](http://www.bittorrent.org/beps/bep_0003.html)
+- [Wikipedia entry](http://en.wikipedia.org/wiki/BitTorrent)
+- [The Pirate Bay, a BitTorrent distribution server](http://thepiratebay.sx/)
+- [An example of list of trackers](http://tech.thaweesha.com/2013/02/torrent-tracker-list-2013.html)
+- Encyclopædia Britannica entries on ["BitTorrent."](academic-eb-com.flagship.luc.edu/levels/collegiate/article/BitTorrent/571419) and ["P2P."](academic-eb-com.flagship.luc.edu/levels/collegiate/article/P2P/471622) (database login required)
