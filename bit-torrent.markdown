@@ -88,16 +88,16 @@ Thus,
     | `downloaded`	| The total amount (in bytes) this peer has downloaded so far				|
     | `left`		| The amount (in bytes) this peer has yet to download to complete download	|
     | `event`		| An optional key that maps to 'completed', 'started', or stopped'
-						(peers can inform the trackers of their status using event messages) 	|
+(peers can inform the trackers of their status using event messages) 							|
 
 
   - Tracker responses are dictionaries with the following elements:
 
 	|	Element		|	Discription																		|
 	 -------------- |:---------------------------------------------------------------------------------:|
-    | interval		: Number of seconds downloader should wait before sending another request			|
-    | peers			: A list of dictionaries corresponding to peers										|
-    | failure reason: A string explaining the reason why the request failed, in case there is a failure |
+    | interval		| Number of seconds downloader should wait before sending another request			|
+    | peers			| A list of dictionaries corresponding to peers										|
+    | failure reason| A string explaining the reason why the request failed, in case there is a failure |
 
 
 ![BitTorrent Model](/figures/BitTorrentModel.png)
