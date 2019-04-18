@@ -1,19 +1,18 @@
 # BitTorrent
 
-
 Introduction
-=============
+-------------
 BitTorrent is an Internet protocol primarily used for transporting large media contents.
 Bram Cohen designed, implemented, and released BitTorrent in 2001. The lengthy download times of protocols such as the File Transfer Protocol (FTP) influenced its creation. (Encyclopædia Britannica)
 It mainly relies on Peer-to-Peer (P2P) distributed computing to facilitate the network's bandwith capacity.
 
 
-![BitTorrent Model](/figures/BitTorrentModel.png)
 
 
 ## Peer-to-Peer (P2P) Networking
-Unlike centralized client-server networks, decentralized P2P networks spread processing and networking costs among thier connected users.
+Unlike a conventional client-server centralized network, a P2P decentralized network spreads processing power and connection costs among its interconnected nodes. These nodes, referred to as "peers",
 
+![Server-Client Model](/figures/Server-based-network.png "Server-Client Model") ![P2P Model](/figures/P2P-network.png "Peer-to-Peer Model")
 
 ### Examples
 - Napster
@@ -70,6 +69,7 @@ Terminology
     - peers: A list of dictionaries corresponding to peers
     - failure reason: A string explaining the reason why the request failed, in case there is a failure
 
+![BitTorrent Model](/figures/BitTorrentModel.png)
 
 How It Works
 ----------------
