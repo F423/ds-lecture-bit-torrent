@@ -77,16 +77,18 @@ Thus,
   - It returs a random list of peers to the clients when requested.
   - Peers send Tracker GET requests to trackers and they get Responses back from the tracker.
   - Tracker GET requests have the following fields:
-    - `info_hash`	: A sha1 hash of the metainfo file
-    - `peer_id`		: A 20 byte identifier that the peer generates once it starts initially
-    - `ip`			: The peer's IP address
-    - `port`		: Port number used by the peer
-    - `uploaded`	: Current total of uploaded bytes
-    - `downloaded`	: The total amount (in bytes) this peer has downloaded so far
-    - `left`		: The amount (in bytes) this peer has yet to download to complete download
-    - `event`		: An optional key that maps to 'completed', 'started', or stopped'
 
-		(peers can inform the trackers of their status using event messages).
+	|	Field		|	Discription																|
+	 -------------- | ------------------------------------------------------------------------- |
+    | `info_hash`	| A sha1 hash of the metainfo file											|
+    | `peer_id`		| A 20 byte identifier that the peer generates once it starts initially		|
+    | `ip`			| The peer's IP address														|
+    | `port`		| Port number used by the peer												|
+    | `uploaded`	| Current total of uploaded bytes											|
+    | `downloaded`	| The total amount (in bytes) this peer has downloaded so far				|
+    | `left`		| The amount (in bytes) this peer has yet to download to complete download	|
+    | `event`		| An optional key that maps to 'completed', 'started', or stopped' (peers can inform the trackers of their status using event messages) |
+
 
   - Tracker responses are dictionaries with the following elements:
     - interval: Number of seconds downloader should wait before sending another request
