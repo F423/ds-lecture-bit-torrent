@@ -13,8 +13,6 @@ Unlike a conventional client-server centralized network, a P2P decentralized net
 Each connected node, referred to as "peer", act as a client and a server concurrently.
 Thus,
 
-#### Server-Client vs P2P Model
-
 #### Applications & Examples
 - Content delivery and file sharing
 	- BitTorrent
@@ -27,7 +25,9 @@ Thus,
 	- P2PTV
 	- BitTorrent Live
 
-![Server-Client vs P2P Model](/figures/p2p-vs-serverClient.jpeg)
+#### Server-Client vs P2P Model
+
+![Server-Client vs P2P Model](/figures/p2p-vs-serverClient.png)
 
 ---
 
