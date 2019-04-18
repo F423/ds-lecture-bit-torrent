@@ -1,22 +1,15 @@
-BitTorrent
+# BitTorrent
+
+
+Introduction
 =============
 
-## Overview
-- BitTorrent is a protocol for Peer-to-Peer (P2P) content sharing over the Internet.
-- In November 2004 BitTorrent share of the whole Internet Traffic was estimated at 35% (Wikipedia).
-- The protocol was designed by Bram Cohen in 2001.
-- Bram Cohen released an implementation in the same year.
-- The final Version was released in 2008.
--
+BitTorrent is an Internet protocol primarily used for transporting large media contents.
+Bram Cohen designed, implemented, and released BitTorrent in 2001. The lengthy download times of protocols such as the File Transfer Protocol (FTP) influenced its creation. (Encyclopædia Britannica)
+It relies on Peer-to-Peer (P2P) distributed computing to facilitate the network's bandwith capacity.
+
 
 ![BitTorrent Model](/figures/BitTorrentModel.png)
-
-
-## Examples
-
-
-
-## Advantages of P2P over FTP
 
 
 Terminology
