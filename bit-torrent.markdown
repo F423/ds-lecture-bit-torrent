@@ -14,7 +14,6 @@ Each connected node, referred to as "peer", act as a client and a server concurr
 Thus,
 
 #### Server-Client vs P2P Model
-![Server-Client vs P2P Model](/figures/p2p-vs-serverClient)
 
 #### Applications & Examples
 - Content delivery and file sharing
@@ -28,8 +27,9 @@ Thus,
 	- P2PTV
 	- BitTorrent Live
 
----
+![Server-Client vs P2P Model](/figures/p2p-vs-serverClient.jpeg)
 
+---
 
 ## Terminology
 
@@ -50,16 +50,15 @@ Thus,
 
 		(e.g., `4:info` corresponds to 'info').
 
-  - Integers are prefixed by an 'i' followed by the integer and ending with an 'e'.
+  	- Integers are prefixed by an 'i' followed by the integer and ending with an 'e'.
 
 		(e.g., `i3e` corresponds to '3').
 
-  - Lists are prefixed with 'l' followed by elements (also bencoded) ending with 'e'.
+  	- Lists are prefixed with 'l' followed by elements (also bencoded) ending with 'e'.
 
 		(e.g., `l4:info3:abce` corresponds to ['info', 'abc'])
 
-  - Dictionaries are prefixed by 'd' followed by an alternating list of keys and values, and they end in 'e'.
-
+  	- Dictionaries are prefixed by 'd' followed by an alternating list of keys and values, and they end in 'e'.
 
 		(e.g., `d1:a4:spam1:b4:infoe` corresponds to {'a': 'spam', 'b': 'info'})
 
@@ -86,10 +85,10 @@ Thus,
     - `downloaded`	: The total amount (in bytes) this peer has downloaded so far
     - `left`		: The amount (in bytes) this peer has yet to download to complete download
     - `event`		: An optional key that maps to 'completed', 'started', or stopped'
+
 		(peers can inform the trackers of their status using event messages).
 
   - Tracker responses are dictionaries with the following elements:
-
     - interval: Number of seconds downloader should wait before sending another request
     - peers: A list of dictionaries corresponding to peers
     - failure reason: A string explaining the reason why the request failed, in case there is a failure
@@ -97,9 +96,9 @@ Thus,
 
 ![BitTorrent Model](/figures/BitTorrentModel.png)
 
+---
 
-How It Works
-----------------
+## Operation
 - BitTorrent client is the tool used to achieve the majority of the activities in sharing.
 - The file(s) being distribted is divided into pieces.
 
@@ -115,9 +114,7 @@ How It Works
   - At any point in time, a specific number of pieces (usually 5) is requested.
 
 
-Piece Selection Policy
-==========================
-
+## Policy of Piece Selection
 If pieces are not selected in a well-thought way, all peers may endup having downloaded the same pieces but some (of the more difficult pieces) may be missing. If the seeder disappears preamturely, all peers may end up with incomplete files.
 To solve this issue, one or more of the following policies are used:
 
@@ -133,34 +130,33 @@ To solve this issue, one or more of the following policies are used:
   - This ensures that the common pieces are left towards the end to be downloaded.
 
 
-Create and Share Torrent Files
-=================================
-
+## Sharing & Creating Torrents
 When a user wants to share a file, they would create a torrent file (Torrent files are identified by .torrent extension) using the client application.
 The torrent file wraps around information such as the specifi file(s) to be shared, location of the file(s) on the seed machine, etc.
 The torrent file is then shared with other peers.
 The original uploader is known as seed/seeder and others who start downloading from seeder are known as peers or leechers.
 
 
-Choking and Optimistic Unchoking Algorithm
-============================================
-Choking is a mechanism using which the BitTorrent protocol avoids free riders, those who want to download but not upload.
-Also, choking helps tackle network congestion???
+## Choking & Optimistic Unchoking Algorithm
+Choking is a mechanism using which the BitTorrent protocol avoids free riders, (i.e., those seeking to download without uploading. Also, choking aids in tackling network congestion.
 
-#. Upload one file piece to peer p
-#. Repeat 1 N times // N is typically between 2 and 5
-#. If peer p uploads data go to 1 else go to 4
-#. Stop uploading to p for S seconds
-#. After S seconds go to step 1
+The following procedure is applied for all peers.
 
-The above procedure is applied for all peers. The last step is called optimistic unchoking. This way the algorithm makes sure that no peers are choked permanently.
-This is a simplistic procedure for choking/unchoking mechanism. The real algorithm may be more complex depending on implementation.
-In the the case where the uploader is a seeder rather than a simple peer, the overall upload rate for the downloading peer is checked and then it is decided whether to chokoe or unchoke.
-And finally the seeders and peers upoad to those peers with the highest upload rate. This way, the protocol makes sure that the the uploads complete fast and the number of replica is large.
+1. Upload one file piece to peer p
+2. Repeat 1 N times // N is typically between 2 and 5
+3. If peer p uploads data go to 1 else go to 4
+4. Stop uploading to p for S seconds
+5. After S seconds go to step 1
+
+The last step (5.) is called optimistic unchoking.
+This way the algorithm makes sure that no peers are choked permanently.
+This is a simplistic procedure for the choking/unchoking scheme.
+The actual algorithm might be more complex depending on implementation.
+In the case where the uploader is a seeder rather than a peer, the overall upload rate for the downloading peer is checked and then it is decided whether to choke or unchoke.
+Finally, seeders and peers upload to peers with the highest upload rate. This way, the protocol makes sure that uploads finish fast and thet replicas are large.
 
 
-Peer Protocol
-=================
+## Peer Protocol
 - Peer connections are symmetrical: same data can be sent in both directions
 - File pieces are referred to by indexes
 - When a peer finishes downloading a piece it announces to all other peers that it has that piece
@@ -176,40 +172,35 @@ Peer Protocol
 - At this point handshake is finished and an alternating stream of length prefixes and messages continue flowing
 - Peer messages start with a byte that specifies their type as follows:
 
-  - 0: choke
-  - 1: unchoke
-  - 2: interested
-  - 3: not interested
-  - 4: have
-  - 5: bitfield
-  - 6: request
-  - 7: piece
-  - 8: cancel
 
-choke, unchoke, interested and not interested have no payload.
-The 'have' message has a number as its payload which is the index of the piece the downloader has just completed.
-Cancel messages are sent when the download is completed.
+	0: choke
+  	1: unchoke
+  	2: interested
+  	3: not interested
+  	4: have
+  	5: bitfield
+  	6: request
+  	7: piece
+  	8: cancel
+
+	(choke, unchoke, interested and not interested do not contain a payload)
+	The 'have' message has a number as its payload which is the index of the piece the downloader has just completed.
+	Cancel messages are sent when the download is completed.
 
 
-Distributed Characteristics
-================================
-
+## Distributed Characteristics
 - Support for resource sharing
-
   - Trackers are used to make sure that resources are shared among as many peers as possible
 
 - Openness
-
   - The specification is open for implementation.
   - No restriction to any particular platform whatsover. There are implementations for various platforms.
 
 - Concurrency
-
   - Each peer is both a client and server
   - Many processes interact to achieve the job
 
 - Scalability
-
   - Peers are added or removed seamlessly without affecting the reliability of the system.
   - New trackers can be added and old one can disappear without much effect to the whole system.
 
@@ -226,8 +217,7 @@ Distributed Characteristics
   - It looks much like a normal client-server download manager
 
 
-Advantages
-=============
+## Advantages
 
 - Economical: Almost no maintenance cost is involved
 - It is very efficient since every participant is a content provider. No dependency on a single party.
@@ -236,13 +226,13 @@ Advantages
 - It gives flexibility: The work is evenly distributed among peers.
 
 
-Disadvantages
-==============
+## Disadvantages
 
 - If there is no seeder, for some content the peers may end up exchanging only part of the whole content.
 - Peers are loosely dependent on one another for bandwidth.
 - Designed for public file sharing and hence not the best option for private sharing
 - Copyright infringment concerns: it is hard to control whether the shared resources for copyright infringement.
+
 
 
 References
