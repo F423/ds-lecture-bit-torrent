@@ -79,7 +79,7 @@ Thus,
   - Tracker GET requests have the following fields:
 
 	|	Field		|	Discription																|
-	 -------------- | ------------------------------------------------------------------------- |
+	 -------------- |:-------------------------------------------------------------------------:|
     | `info_hash`	| A sha1 hash of the metainfo file											|
     | `peer_id`		| A 20 byte identifier that the peer generates once it starts initially		|
     | `ip`			| The peer's IP address														|
@@ -87,13 +87,17 @@ Thus,
     | `uploaded`	| Current total of uploaded bytes											|
     | `downloaded`	| The total amount (in bytes) this peer has downloaded so far				|
     | `left`		| The amount (in bytes) this peer has yet to download to complete download	|
-    | `event`		| An optional key that maps to 'completed', 'started', or stopped' (peers can inform the trackers of their status using event messages) |
+    | `event`		| An optional key that maps to 'completed', 'started', or stopped'
+						(peers can inform the trackers of their status using event messages) 	|
 
 
   - Tracker responses are dictionaries with the following elements:
-    - interval: Number of seconds downloader should wait before sending another request
-    - peers: A list of dictionaries corresponding to peers
-    - failure reason: A string explaining the reason why the request failed, in case there is a failure
+
+	|	Element		|	Discription																		|
+	 -------------- |:---------------------------------------------------------------------------------:|
+    | interval		: Number of seconds downloader should wait before sending another request			|
+    | peers			: A list of dictionaries corresponding to peers										|
+    | failure reason: A string explaining the reason why the request failed, in case there is a failure |
 
 
 ![BitTorrent Model](/figures/BitTorrentModel.png)
