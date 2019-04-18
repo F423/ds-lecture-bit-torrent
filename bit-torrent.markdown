@@ -13,6 +13,11 @@ Unlike a conventional client-server centralized network, a P2P decentralized net
 Each connected node, referred to as "peer", act as a client and a server concurrently.
 Thus,
 
+#### Server-Client vs P2P Model
+
+![Server-Client vs P2P Model](/figures/p2p-vs-serverClient.png)
+
+
 #### Applications & Examples
 - Content delivery and file sharing
 	- BitTorrent
@@ -24,10 +29,11 @@ Thus,
 - Media Streaming Protocols
 	- P2PTV
 	- BitTorrent Live
+- Search Engines
+	- YaCy
 
-#### Server-Client vs P2P Model
+![YaCy P2P Search](/figures/p2p-websearch.png)
 
-![Server-Client vs P2P Model](/figures/p2p-vs-serverClient.png)
 
 ---
 
@@ -87,8 +93,7 @@ Thus,
     | `uploaded`	| Current total of uploaded bytes											|
     | `downloaded`	| The total amount (in bytes) this peer has downloaded so far				|
     | `left`		| The amount (in bytes) this peer has yet to download to complete download	|
-    | `event`		| An optional key that maps to 'completed', 'started', or stopped'
-(peers can inform the trackers of their status using event messages) 							|
+    | `event`		| An optional key that maps to 'completed', 'started', or stopped'(peers can inform the trackers of their status using event messages) 														|
 
 
   - Tracker responses are dictionaries with the following elements:
