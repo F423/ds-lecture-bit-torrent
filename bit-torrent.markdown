@@ -13,9 +13,7 @@ Each connected node, referred to as "peer", act as a client and a server concurr
 Thus,
 
 #### Server-Client vs P2P Model
-![Server-Client Model](/figures/Server-based-network.svg.png)
-
-![P2P Model](/figures/P2P-network.svg)
+![Server-Client vs P2P Model](/figures/p2p-vs-serverClient)
 
 #### Applications & Examples
 - Content delivery and file sharing
