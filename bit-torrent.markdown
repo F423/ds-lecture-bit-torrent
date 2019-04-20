@@ -3,7 +3,7 @@
 ## Introduction
 BitTorrent is an Internet protocol primarily used for transporting large media contents.
 Bram Cohen designed, implemented, and released BitTorrent in 2001. The lengthy download times of protocols such as the File Transfer Protocol (FTP) influenced its creation. (Encyclopædia Britannica)
-It mainly relies on Peer-to-Peer (P2P) distributed computing to facilitate the network's bandwith capacity.
+It mainly relies on Peer-to-Peer (P2P) distributed computing to facilitate the network's bandwidth capacity.
 
 
 ---
@@ -41,7 +41,7 @@ Thus,
 
 #### Seeders
 - Clients obtaining a complete copy of the file's contents are called seeders.
-- Initially a single seeder exist (original uploader).
+- Initially a single seeder exists (original uploader).
 - Peers who download the file completely and continue to share, become seeders.
 
 #### Peers
@@ -80,11 +80,11 @@ Thus,
   - A host that coordinates file distribution.
   - Maintains IP address, port number and an ID for every peer.
   - Transfer state for peers: downloading, completed.
-  - It returs a random list of peers to the clients when requested.
+  - It returns a random list of peers to the clients when requested.
   - Peers send Tracker GET requests to trackers and they get Responses back from the tracker.
   - Tracker GET requests have the following fields:
 
-	|	Field		|	Discription																|
+	|	Field		|	Description																|
 	 -------------- |:-------------------------------------------------------------------------:|
     | `info_hash`	| A sha1 hash of the metainfo file											|
     | `peer_id`		| A 20 byte identifier that the peer generates once it starts initially		|
@@ -98,7 +98,7 @@ Thus,
 
   - Tracker responses are dictionaries with the following elements:
 
-	|	Element		|	Discription																		|
+	|	Element		|	Description																		|
 	 -------------- |:---------------------------------------------------------------------------------:|
     | interval		| Number of seconds downloader should wait before sending another request			|
     | peers			| A list of dictionaries corresponding to peers										|
@@ -111,7 +111,7 @@ Thus,
 
 ## Operation
 - BitTorrent client is the tool used to achieve the majority of the activities in sharing.
-- The file(s) being distribted is divided into pieces.
+- The file(s) being distributed is divided into pieces.
 
   - When a peer receives a piece, it can then redistribute it to other peers.
   - Pieces are protected by a cryptographic hash so as to avoid accidental or malicious modification.
@@ -126,18 +126,17 @@ Thus,
 
 
 ## Policy of Piece Selection
-If pieces are not selected in a well-thought way, all peers may endup having downloaded the same pieces but some (of the more difficult pieces) may be missing. If the seeder disappears preamturely, all peers may end up with incomplete files.
+If pieces are not selected in a well-thought way, all peers may endup having downloaded the same pieces but some (of the more difficult pieces) may be missing. If the seeder disappears prematurely, all peers may end up with incomplete files.
 To solve this issue, one or more of the following policies are used:
 
 - Random First Piece Selection
 
   - Initially the peer has no pieces.
-  - Select a first piece and downoad it as soon as possibly.
+  - Select a first piece and download it as soon as possibly.
   - Select a random piece of the file and download it.
 
 - Rarest Piece First
-
-  - Determine the piecest that are not found or are rare among the peers and download those first.
+  - Determine the pieces that are not found or are rare among the peers and download those first.
   - This ensures that the common pieces are left towards the end to be downloaded.
 
 
@@ -205,7 +204,7 @@ Finally, seeders and peers upload to peers with the highest upload rate. This wa
 
 - Openness
   - The specification is open for implementation.
-  - No restriction to any particular platform whatsover. There are implementations for various platforms.
+  - No restriction to any particular platform. There are implementations for various platforms.
 
 - Concurrency
   - Each peer is both a client and server
@@ -216,14 +215,12 @@ Finally, seeders and peers upload to peers with the highest upload rate. This wa
   - New trackers can be added and old one can disappear without much effect to the whole system.
 
 - Fault Tolerance
-
   - When peers appear or disappear at random, the system is not affected significantly as long as there is at least one seeder.
   - One or more trackers should always exist to propogate peers information.
   - If number of seeders goes to zero, peers keep sharing the portions of the files that they have. This might mean that the file(s) might be incomplete. As soon as a seeder re-appears all peers can catch up and get the whole file(s).
   - There are implementations in which there is no need for trackers.
 
 - Transparency
-
   - All details are hidden from the end users.
   - It looks much like a normal client-server download manager
 
@@ -242,7 +239,7 @@ Finally, seeders and peers upload to peers with the highest upload rate. This wa
 - If there is no seeder, for some content the peers may end up exchanging only part of the whole content.
 - Peers are loosely dependent on one another for bandwidth.
 - Designed for public file sharing and hence not the best option for private sharing
-- Copyright infringment concerns: it is hard to control whether the shared resources for copyright infringement.
+- Copyright infringement concerns: it is hard to control whether the shared resources for copyright infringement.
 
 
 
